@@ -213,17 +213,18 @@ public class QuarantineLab {
                                 console2String += "Processing char: \'" + fifo.peek() + "\'.\n";
                                 tmpString2 += fifo.peek().toString();
                                 if (!fifo.peek().toString().matches(filtredSymbols)) {
+                                    console2String += "Char \'" + fifo.peek() + "\' is \'CLEAN\' char.\n";
+                                    console2String += "Writing char to result string.\n";
                                     if (result == null) {
                                         result = fifo.poll().toString();
                                     } else {
                                         result += fifo.poll().toString();
                                     }
-                                    console2String += "Char \'" + fifo.peek() + "\' is \'CLEAN\' char.\n";
-                                    console2String += "Writing char to result string.\n";
+                                    
                                 } else {
-                                    fifo.remove();
                                     console2String += "Char \'" + fifo.peek() + "\' is \'DIRT\' char.\n";
                                     console2String += "Ignoring this char.\n";
+                                    fifo.remove();
                                 }
                             }
                         }
