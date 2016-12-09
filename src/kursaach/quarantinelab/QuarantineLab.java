@@ -127,6 +127,7 @@ public class QuarantineLab {
                 try {
                     s = FileHelper.getString(pathSrcText);
                 } catch (IOException ex) {
+                    System.out.println("OLOSDLASDOASODOASDO");
                     Logger.getLogger(QuarantineLab.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 le = s.length();

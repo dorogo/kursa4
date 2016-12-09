@@ -24,23 +24,26 @@ public final class FileHelper {
         File file = new File(fileName);
         Reader reader = new FileReader(file);
         BufferedReader bReader = new BufferedReader(reader);
-       return  bReader;
+        return bReader;
     }
-    
+
     public static String getString(String fileName) throws IOException {
-        File file = new File(fileName);
-        Reader reader = new FileReader(file);
-        BufferedReader bReader = new BufferedReader(reader);
-        String line;
         String tmp = "";
-        while ((line = bReader.readLine())!= null) {            
-            tmp += line;
+        try {
+            File file = new File(fileName);
+            Reader reader = new FileReader(file);
+            BufferedReader bReader = new BufferedReader(reader);
+            String line;
+            while ((line = bReader.readLine()) != null) {
+                tmp += line;
+            }
+        } catch (Exception e) {
+
         }
-        
-       return  tmp;
+        return tmp;
     }
-    
-    public static boolean writeString (String src, String packetPath, boolean append) {
+
+    public static boolean writeString(String src, String packetPath, boolean append) {
         File file = new File(packetPath);
         Writer writer = null;
         try {

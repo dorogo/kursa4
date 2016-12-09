@@ -5,6 +5,7 @@
  */
 package kursaach.view;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -28,6 +29,7 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import kursaach.MainApp;
+import kursaach.quarantinelab.QuarantineLab;
 
 /**
  *
@@ -112,16 +114,25 @@ public class QuarantineController implements Initializable {
         startBtn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                speedPane.setDisable(true);
-                modesPane.setDisable(true);
-                startBtn.setDisable(true);
-                stopBtn.setDisable(false);
-                pauseBtn.setDisable(false);
-                generateFileBtn.setDisable(true);
-                try {
-                    mainApp.startProcessQuarantine(mode2Rd.isSelected());
-                } catch (IOException ex) {
-                    Logger.getLogger(QuarantineController.class.getName()).log(Level.SEVERE, null, ex);
+                if (!(new File(QuarantineLab.pathSrcText).exists()) || !(new File(QuarantineLab.pathCleanSrcText).exists())) {
+                    try {
+                        showGenerateWindow();
+                    } catch (IOException ex) {
+                        Logger.getLogger(QuarantineController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                } else {
+
+                    speedPane.setDisable(true);
+                    modesPane.setDisable(true);
+                    startBtn.setDisable(true);
+                    stopBtn.setDisable(false);
+                    pauseBtn.setDisable(false);
+                    generateFileBtn.setDisable(true);
+                    try {
+                        mainApp.startProcessQuarantine(mode2Rd.isSelected());
+                    } catch (IOException ex) {
+                        Logger.getLogger(QuarantineController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
 
             }
@@ -166,32 +177,34 @@ public class QuarantineController implements Initializable {
             @Override
             public void handle(ActionEvent event) {
                 System.out.println("GEnerate window ihs here!");
-                Parent root;
                 try {
-
-                    FXMLLoader loader = new FXMLLoader();
-                    loader.setLocation(MainApp.class.getResource("view/GenerateFiles.fxml"));
-                    root = loader.load();
-
-                    Stage stage = new Stage();
-                    stage.setTitle("Generate files for quarantine.");
-                    stage.setScene(new Scene(root, 800, 400));
-                    stage.initModality(Modality.WINDOW_MODAL);
-                    stage.initOwner(mainApp.getPrimaryStage());
-                    stage.setResizable(false);
-                    stage.show();
-
-                    GenerateController controller = loader.getController();
-
-                    controller.setParentApp(currWindow);
-
-                    // Hide this current window (if this is what you want)
-//                    ((Node) (event.getSource())).getScene().getWindow().s
+                    showGenerateWindow();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
         });
+
+    }
+
+    private void showGenerateWindow() throws IOException {
+
+        Parent root;
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(MainApp.class.getResource("view/GenerateFiles.fxml"));
+        root = loader.load();
+
+        Stage stage = new Stage();
+        stage.setTitle("Generate files for quarantine.");
+        stage.setScene(new Scene(root, 800, 400));
+        stage.initModality(Modality.WINDOW_MODAL);
+        stage.initOwner(mainApp.getPrimaryStage());
+        stage.setResizable(false);
+        stage.show();
+
+        GenerateController controller = loader.getController();
+
+        controller.setParentApp(currWindow);
 
     }
 
