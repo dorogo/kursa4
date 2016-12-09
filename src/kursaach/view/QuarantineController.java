@@ -214,6 +214,13 @@ public class QuarantineController implements Initializable {
 
     public void setMainApp(MainApp mApp) {
         this.mainApp = mApp;
+        if (!(new File(QuarantineLab.pathSrcText).exists()) || !(new File(QuarantineLab.pathCleanSrcText).exists())) {
+            try {
+                showGenerateWindow();
+            } catch (IOException ex) {
+                Logger.getLogger(QuarantineController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
 
     }
 
